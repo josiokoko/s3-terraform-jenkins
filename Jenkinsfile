@@ -21,6 +21,13 @@ pipeline {
             }
         }
 
+        stage('Dev - destroy'){
+            steps{
+                sh returnStatus: true, script: 'terraform workspace new dev'
+                sh "terraform destroy -auto-approve"
+            }
+        }
+
         stage('Prod - init'){
             steps{
                 sh returnStatus: true, script: 'terraform workspace new prod'
@@ -32,6 +39,13 @@ pipeline {
             steps{
                 sh returnStatus: true, script: 'terraform workspace new prod'
                 sh "terraform apply -auto-approve -var-file=prod.tfvars"
+            }
+        }
+
+        stage('Prod - destroy'){
+            steps{
+                sh returnStatus: true, script: 'terraform workspace new prod'
+                sh "terraform destroy -auto-approve"
             }
         }
 
